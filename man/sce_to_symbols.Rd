@@ -9,23 +9,29 @@ sce_to_symbols(
   reference = c("sce", "scpca", "10x2020", "10x2024"),
   unique = FALSE,
   convert_hvg = TRUE,
-  convert_pca = TRUE
+  convert_pca = TRUE,
+  seurat_compatible = FALSE
 )
 }
 \arguments{
-\item{sce}{A SingleCellExperiment object containing gene ids and gene symbols.}
+\item{sce}{A SingleCellExperiment object containing gene ids and gene
+symbols.}
 
-\item{reference}{The reference gene list for conversion. One of `sce`, `scpca`,
-`10x2020`, or `10x2024`. If `sce` (the default) the internal row data is used.}
+\item{reference}{The reference gene list for conversion. One of `sce`,
+`scpca`, `10x2020`, or `10x2024`. If `sce` (the default) the internal row
+data is used.}
 
-\item{unique}{Whether to use unique gene symbols, as would be done if
-data had been read in with gene symbols by Seurat. Default is FALSE.}
+\item{unique}{Whether to use unique gene symbols, as would be done if data
+had been read in with gene symbols by Seurat. Default is FALSE.}
 
-\item{convert_hvg}{Logical indicating whether to convert highly variable genes to gene symbols.
-Default is TRUE.}
+\item{convert_hvg}{Logical indicating whether to convert highly variable
+genes to gene symbols. Default is TRUE.}
 
-\item{convert_pca}{Logical indicating whether to convert PCA rotation matrix to gene symbols.
-Default is TRUE.}
+\item{convert_pca}{Logical indicating whether to convert PCA rotation matrix
+to gene symbols. Default is TRUE.}
+
+\item{seurat_compatible}{Logical indicating whether to make gene symbols
+Seurat-compatible by replacing underscores with dashes. Default is FALSE.}
 }
 \value{
 A SingleCellExperiment object with row names set as gene symbols.
