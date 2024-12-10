@@ -11,9 +11,10 @@ suppressPackageStartupMessages({
 
 ## Download the reference data -------------------------------------------------
 
+setwd(here::here())
 
 # Read in the test data ScPCA SCE object and extract the row data:
-genes_scpca <- readRDS(here::here("tests", "testthat", "data", "scpca_sce.rds")) |>
+genes_scpca <- readRDS(testthat::test_path("data", "scpca_sce.rds")) |>
   rowData() |>
   as.data.frame() |>
   # Use Ensembl ID if gene symbol is missing, then make unique

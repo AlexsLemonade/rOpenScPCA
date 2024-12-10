@@ -9,26 +9,31 @@ ensembl_to_symbol(
   reference = c("scpca", "10x2020", "10x2024"),
   sce = NULL,
   unique = FALSE,
-  leave_na = FALSE
+  leave_na = FALSE,
+  seurat_compatible = FALSE
 )
 }
 \arguments{
 \item{ensembl_ids}{A character vector of Ensembl gene ids to translate to
 gene symbols.}
 
-\item{reference}{The reference gene list to use for translation. One of `scpca`,
-`10x2020`, `10x2024`. The `scpca` reference is the default.}
+\item{reference}{The reference gene list to use for translation. One of
+`scpca`, `10x2020`, `10x2024`. The `scpca` reference is the default.}
 
-\item{sce}{A SingleCellExperiment object to use as a reference for gene symbols.
-If provided, the `reference` argument will be ignored. The `sce` object must
-include columns with the names `gene_ids` (containing Ensembl ids) and
-`gene_symbol` (containing the symbols) to use for conversion.}
+\item{sce}{A SingleCellExperiment object to use as a reference for gene
+symbols. If provided, the `reference` argument will be ignored. The `sce`
+object must include columns with the names `gene_ids` (containing Ensembl
+ids) and `gene_symbol` (containing the symbols) to use for conversion.}
 
-\item{unique}{Whether to use unique gene symbols, as would be done if
-data had been read in with gene symbols by Seurat. Default is FALSE.}
+\item{unique}{Whether to use unique gene symbols, as would be done if data
+had been read in with gene symbols by Seurat. Default is FALSE.}
 
-\item{leave_na}{Whether to leave NA values in the output vector.
-If FALSE, any missing values will be replaced with the input ensembl_id value.
+\item{leave_na}{Whether to leave NA values in the output vector. If FALSE,
+any missing values will be replaced with the input ensembl_id value.
+Default is FALSE.}
+
+\item{seurat_compatible}{Whether to return a vector that is compatible with
+Seurat, translating and underscores to dashes.
 Default is FALSE.}
 }
 \value{
