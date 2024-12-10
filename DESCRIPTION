@@ -21,8 +21,12 @@ LazyData: true
 Suggests:
     testthat (>= 3.0.0),
     scater,
+    scran,
     Seurat,
-    splatter
+    splatter,
+    scuttle,
+    Matrix,
+    SeuratObject
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports:
@@ -34,6 +38,7 @@ Imports:
     purrr,
     S4Vectors,
     SingleCellExperiment,
+    SummarizedExperiment,
     tibble,
     tidyr
 biocViews:

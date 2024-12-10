@@ -13,18 +13,21 @@
 #'
 #'
 #' @param ensembl_ids A character vector of Ensembl gene ids to translate to
-#'  gene symbols.
-#' @param reference The reference gene list to use for translation. One of `scpca`,
-#'   `10x2020`, `10x2024`. The `scpca` reference is the default.
-#' @param sce A SingleCellExperiment object to use as a reference for gene symbols.
-#'  If provided, the `reference` argument will be ignored. The `sce` object must
-#'  include columns with the names `gene_ids` (containing Ensembl ids) and
-#'  `gene_symbol` (containing the symbols) to use for conversion.
-#' @param unique Whether to use unique gene symbols, as would be done if
-#'  data had been read in with gene symbols by Seurat. Default is FALSE.
-#' @param leave_na Whether to leave NA values in the output vector.
-#' If FALSE, any missing values will be replaced with the input ensembl_id value.
-#' Default is FALSE.
+#'   gene symbols.
+#' @param reference The reference gene list to use for translation. One of
+#'   `scpca`, `10x2020`, `10x2024`. The `scpca` reference is the default.
+#' @param sce A SingleCellExperiment object to use as a reference for gene
+#'   symbols. If provided, the `reference` argument will be ignored. The `sce`
+#'   object must include columns with the names `gene_ids` (containing Ensembl
+#'   ids) and `gene_symbol` (containing the symbols) to use for conversion.
+#' @param unique Whether to use unique gene symbols, as would be done if data
+#'   had been read in with gene symbols by Seurat. Default is FALSE.
+#' @param leave_na Whether to leave NA values in the output vector. If FALSE,
+#'   any missing values will be replaced with the input ensembl_id value.
+#'   Default is FALSE.
+#' @param seurat_compatible Whether to return a vector that is compatible with
+#'   Seurat, translating and underscores to dashes.
+#'   Default is FALSE.
 #'
 #' @return A vector of gene symbols corresponding to the input Ensembl ids.
 #' @export
@@ -51,7 +54,8 @@ ensembl_to_symbol <- function(
     reference = c("scpca", "10x2020", "10x2024"),
     sce = NULL,
     unique = FALSE,
-    leave_na = FALSE) {
+    leave_na = FALSE,
+    seurat_compatible = FALSE) {
   reference <- match.arg(reference)
   stopifnot(
     "`ensembl_ids` must be a character vector." = is.character(ensembl_ids),
@@ -85,8 +89,15 @@ ensembl_to_symbol <- function(
     )
   }
   if (!leave_na && any(missing_symbols)) {
-    warning("Not all input ids have corresponding gene symbols, using input ids for missing values.")
+    message("Not all input ids have corresponding gene symbols, using input ids for missing values.")
     gene_symbols[missing_symbols] <- ensembl_ids[missing_symbols]
+  }
+
+  if (seurat_compatible) {
+    if (any(grepl("_", gene_symbols))) {
+      warning("Replacing underscores ('_') with dashes ('-') in gene symbols for Seurat compatibility.")
+    }
+    gene_symbols <- gsub("_", "-", gene_symbols)
   }
 
   return(gene_symbols)
@@ -112,15 +123,19 @@ ensembl_to_symbol <- function(
 #' (and not disabled by the `convert_hvg` and `convert_pca` arguments).
 #'
 #'
-#' @param sce A SingleCellExperiment object containing gene ids and gene symbols.
-#' @param reference The reference gene list for conversion. One of `sce`, `scpca`,
-#' `10x2020`, or `10x2024`. If `sce` (the default) the internal row data is used.
-#' @param unique Whether to use unique gene symbols, as would be done if
-#' data had been read in with gene symbols by Seurat. Default is FALSE.
-#' @param convert_hvg Logical indicating whether to convert highly variable genes to gene symbols.
-#'  Default is TRUE.
-#' @param convert_pca Logical indicating whether to convert PCA rotation matrix to gene symbols.
-#'  Default is TRUE.
+#' @param sce A SingleCellExperiment object containing gene ids and gene
+#'   symbols.
+#' @param reference The reference gene list for conversion. One of `sce`,
+#'   `scpca`, `10x2020`, or `10x2024`. If `sce` (the default) the internal row
+#'   data is used.
+#' @param unique Whether to use unique gene symbols, as would be done if data
+#'   had been read in with gene symbols by Seurat. Default is FALSE.
+#' @param convert_hvg Logical indicating whether to convert highly variable
+#'   genes to gene symbols. Default is TRUE.
+#' @param convert_pca Logical indicating whether to convert PCA rotation matrix
+#'   to gene symbols. Default is TRUE.
+#' @param seurat_compatible Logical indicating whether to make gene symbols
+#'   Seurat-compatible by replacing underscores with dashes. Default is FALSE.
 #'
 #' @return A SingleCellExperiment object with row names set as gene symbols.
 #' @export
@@ -145,7 +160,8 @@ sce_to_symbols <- function(
     reference = c("sce", "scpca", "10x2020", "10x2024"),
     unique = FALSE,
     convert_hvg = TRUE,
-    convert_pca = TRUE) {
+    convert_pca = TRUE,
+    seurat_compatible = FALSE) {
   reference <- match.arg(reference)
   stopifnot(
     "`sce` must be a SingleCellExperiment object." = is(sce, "SingleCellExperiment"),
@@ -164,9 +180,19 @@ sce_to_symbols <- function(
   }
 
   if (reference == "sce") {
-    gene_symbols <- ensembl_to_symbol(ensembl_ids, sce = sce, unique = unique)
+    gene_symbols <- ensembl_to_symbol(
+      ensembl_ids,
+      sce = sce,
+      unique = unique,
+      seurat_compatible = seurat_compatible
+    )
   } else {
-    gene_symbols <- ensembl_to_symbol(ensembl_ids, reference = reference, unique = unique)
+    gene_symbols <- ensembl_to_symbol(
+      ensembl_ids,
+      reference = reference,
+      unique = unique,
+      seurat_compatible = seurat_compatible
+    )
   }
   row_ids <- gene_symbols
   # set Ensembl ids as original ids for later translations

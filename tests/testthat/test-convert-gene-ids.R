@@ -8,7 +8,7 @@ test_that("basic gene symbol conversion works", {
 test_that("gene symbol conversion works with unexpected ids", {
   ensembl_ids <- c("ENSG00000141510", "ENSG00000134323", "foobar")
 
-  expect_warning(gene_symbols <- ensembl_to_symbol(ensembl_ids))
+  expect_message(gene_symbols <- ensembl_to_symbol(ensembl_ids))
   expect_equal(gene_symbols, c("TP53", "MYCN", "foobar"))
 
   expect_no_warning(gene_symbols_na <- ensembl_to_symbol(ensembl_ids, leave_na = TRUE))
@@ -45,11 +45,23 @@ test_that("gene symbol conversion works using an SCE reference", {
   sce <- readRDS(test_path("data", "scpca_sce.rds"))
   ensembl_ids <- c("ENSG00000015479", "ENSG00000269226")
 
-  gene_symbols <- ensembl_to_symbol(ensembl_ids, sce = sce, unique = FALSE)
+  expect_message(gene_symbols <- ensembl_to_symbol(ensembl_ids, sce = sce, unique = FALSE))
   expect_equal(gene_symbols, c("MATR3", "TMSB15B"))
 
-  gene_symbols <- ensembl_to_symbol(ensembl_ids, sce = sce, unique = TRUE)
+  expect_message(gene_symbols <- ensembl_to_symbol(ensembl_ids, sce = sce, unique = TRUE))
   expect_equal(gene_symbols, c("MATR3.1", "TMSB15B.1"))
+})
+
+test_that("gene symbol conversion in seurat compatibility mode works", {
+  ensembl_ids <- c("ENSG00000141510", "ENSG00000134323")
+  gene_symbols <- ensembl_to_symbol(ensembl_ids, unique = FALSE, seurat_compatible = TRUE)
+  expect_equal(gene_symbols, c("TP53", "MYCN"))
+
+  ensembl_ids <- c("ENSG00000285609", "ENSG00000252254", "ENSG00000283274")
+  expect_warning( # this includes name changes for compatibility, so a warning is expected
+    gene_symbols <- ensembl_to_symbol(ensembl_ids, unique = FALSE, seurat_compatible = TRUE)
+  )
+  expect_equal(gene_symbols, c("5S-rRNA", "Y-RNA", "5-8S-rRNA"))
 })
 
 
@@ -60,7 +72,7 @@ test_that("conversion of a full sce object works as expected", {
   names(gene_symbols) <- rowData(sce)$gene_ids
   gene_symbols[is.na(gene_symbols)] <- names(gene_symbols)[is.na(gene_symbols)]
 
-  expect_warning(converted_sce <- sce_to_symbols(sce))
+  expect_message(converted_sce <- sce_to_symbols(sce)) |> expect_message() # two messages expected here
   expect_equal(rownames(converted_sce), unname(gene_symbols))
 
   # check that hvg and PCA were converted too.
