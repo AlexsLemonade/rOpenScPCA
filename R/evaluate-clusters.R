@@ -307,3 +307,94 @@ calculate_stability <- function(
 
   return(all_ari_df)
 }
+
+#' Evaluate set of clusters
+#'
+#' This wrapper function can be used to evaluate clusters calculated using `sweep_clusters()` function.
+#' Input should be be a list of data frames with the resulting clusters from all parameter combinations provided to
+#' the `sweep_clusters()` function. Output
+#'
+#' @param x An object containing PCs that clusters were calculated from. This can be
+#'   either a SingleCellExperiment object, a Seurat object, or a matrix where columns
+#'   are PCs and rows are cells. If a matrix is provided, it must have row names of cell
+#'   ids (e.g., barcodes).
+#' @param sweep_list A list of data frames obtained from `sweep_clusters()`. each data frame
+#'   in the list that contains at least two columns: one representing
+#'   unique cell ids, and one containing cluster assignments. By default, these columns
+#'   should be named `cell_id` and `cluster` respectively, though this can be customized.
+#'   The cell id column's values should match either the PC matrix row names, or the
+#'   SingleCellExperiment/Seurat object cell ids. Typically this data frame will be
+#'   output from the `rOpenScPCA::calculate_clusters()` function.
+#' @param ... Additional argument are passed on to the respective `calculate_purity()` and
+#' `calculate_silhouette()` functions.
+#'
+#' @return A list of data frames with the original `sweep_clusters()` information as well as the additional
+#'   columns with evaluation information from the `calculate_purity()` and
+#'   `calculate_silhouette()` functions output.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'
+#' set.seed(2024)
+#'
+#' sce_object <- splatter::simpleSimulate(nGenes = 1000, verbose = FALSE) |>
+#'   scater::logNormCounts() |>
+#'   scater::runPCA(ncomponents = 10)
+#'
+#' # Calculate Principal Components
+#' pc_mat <- reducedDim(sce_object, "PCA")
+#'
+#' sweep_list <- sweep_clusters(
+#'   sce_object,
+#'   algorithm = "walktrap",
+#'   weighting = "jaccard",
+#'   nn = c(10, 15, 25),
+#'   resolution = c(.75, 1),
+#'   seed = 9
+#' )
+#'
+#' sweep_list_evaled <- calculate_cell_cluster_metrics(
+#'   x = pc_mat,
+#'   sweep_list = sweep_list
+#' )
+#' }
+#'
+calculate_cell_cluster_metrics <- function(x,
+                                           sweep_list,
+                                           evals = c("purity", "silhouette"),
+                                           ...) {
+  supported_evals <- c("purity", "silhouette")
+
+  # Check input arguments
+  stopifnot(
+    "`sweep_list` must be a list containing data.frames" = is.list(sweep_list),
+    "`sweep_list` must be a list containing data.frames" = is.data.frame(sweep_list[[1]]),
+    " Cluster `evals` that are supported are only 'purity' and 'silhouette'" = all(evals %in% supported_evals)
+  )
+
+
+  evaled_list <- sweep_list |>
+    purrr::map(
+      \(df) {
+        if ("purity" %in% evals) {
+          df <- calculate_purity(
+            x = x,
+            cluster_df = df,
+            ...
+          )
+        }
+        if ("silhouette" %in% evals) {
+          df <- calculate_silhouette(
+            x = x,
+            cluster_df = df,
+            ...
+          )
+        }
+        return(df)
+      }
+    )
+
+  return(evaled_list)
+}
