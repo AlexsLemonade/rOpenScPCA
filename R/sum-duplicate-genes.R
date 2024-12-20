@@ -1,6 +1,6 @@
 #' Sum counts for genes with duplicate names in a SingleCellExperiment object.
 #'
-#' Genes with the same name are merged by summing their raw expression counts.
+#' @description Genes with the same name are merged by summing their raw expression counts.
 #' When multiple Ensembl gene IDs are associated with the same gene symbol,
 #' identifier conversion can result in duplicate gene names. This function
 #' resolves such duplicates by summing the expression values for each duplicate

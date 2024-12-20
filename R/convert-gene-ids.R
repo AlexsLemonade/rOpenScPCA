@@ -1,6 +1,6 @@
 #' Convert Ensembl gene ids to gene symbols based on reference gene lists
 #'
-#' The SingleCellExperiment objects produced as part of ScPCA are indexed by
+#' @description The SingleCellExperiment objects produced as part of ScPCA are indexed by
 #' Ensembl gene ids, as those are more stable than gene symbols. However,
 #' for many applications gene symbols are useful. This function provides
 #' simple conversion of Ensembl gene ids to gene symbols based on either the
@@ -105,7 +105,7 @@ ensembl_to_symbol <- function(
 
 #' Set the row names of an ScPCA SingleCellExperiment object to gene symbols
 #'
-#' The SingleCellExperiment objects produced as part of ScPCA are indexed by
+#' @description The SingleCellExperiment objects produced as part of ScPCA are indexed by
 #' Ensembl gene ids, as those are more stable than gene symbols. However,
 #' for many applications gene symbols are useful. This function converts the
 #' row names (indexes) of a SingleCellExperiment object to gene symbols based on the

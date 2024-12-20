@@ -47,8 +47,7 @@ simple conversion of Ensembl gene ids to gene symbols based on either the
 ScPCA reference gene list or a 10x reference gene list as used by Cell Ranger.
 Alternatively, a SingleCellExperiment object with gene ids and gene symbols
 stored in the row data (as those provided by ScPCA) can be used as the reference.
-}
-\details{
+
 The gene symbols can either be made unique (as would be done if read in by Seurat)
 or left as is.
 }

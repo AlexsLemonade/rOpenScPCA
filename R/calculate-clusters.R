@@ -1,6 +1,6 @@
 #' Calculate graph-based clusters from a provided matrix
 #'
-#' This function is provided to simplify application of bluster package clustering functions on OpenScPCA data.
+#' @description This function is provided to simplify application of bluster package clustering functions on OpenScPCA data.
 #' In particular, this function runs `bluster::clusterRows()` with the `bluster::NNGraphParam()` function on a
 #' principal components matrix, provided either directly or via single-cell object.
 #' Note that defaults for some arguments may differ from the `bluster::NNGraphParam()` defaults.
@@ -155,7 +155,7 @@ calculate_clusters <- function(
 #' Extract a principal components (PC) matrix from either a SingleCellExperiment
 #' or a Seurat object.
 #'
-#' This function first determines if the provided object is a SingleCellExperiment or
+#' @description This function first determines if the provided object is a SingleCellExperiment or
 #' Seurat object, and then extract the PC matrix. If no name for the PC matrix is provided,
 #' this function will use "PCA" for SingleCellExperiment objects, and
 #' "pca" for Seurat objects.

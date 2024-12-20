@@ -3,7 +3,7 @@
 #' Conversion table for Ensembl gene ids and gene symbols
 #'
 #'
-#' This table includes the mapping for gene ids to gene symbols from different
+#' @description This table includes the mapping for gene ids to gene symbols from different
 #' reference genome gene annotation lists.
 #' Included are the original gene symbols and the modified gene symbols that
 #' are created when running the `make.unique()` function, as is done when

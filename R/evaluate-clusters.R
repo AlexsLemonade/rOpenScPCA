@@ -1,6 +1,6 @@
 #' Calculate the silhouette width of clusters
 #'
-#' This function uses the `bluster::approxSilhouette()` function to calculate the
+#' @description This function uses the `bluster::approxSilhouette()` function to calculate the
 #' silhouette width for a clustering result. These results can be used downstream to
 #' calculate the average silhouette width, a popular metric for cluster evaluation.
 #'
@@ -73,7 +73,7 @@ calculate_silhouette <- function(
 
 #' Calculate the neighborhood purity of clusters
 #'
-#' This function uses the `bluster::neighborPurity()` function to calculate the
+#' @description This function uses the `bluster::neighborPurity()` function to calculate the
 #' neighborhood purity values for a clustering result.
 #'
 #' @param x Either a matrix of principal components (PCs), or a SingleCellExperiment
@@ -142,7 +142,7 @@ calculate_purity <- function(
 
 #' Calculate cluster stability using the Adjusted Rand Index (ARI)
 #'
-#' This function generates and clusters, using provided parameters, bootstrap
+#' @description This function generates and clusters, using provided parameters, bootstrap
 #' replicates calculates the Adjusted Rand Index (ARI) between each set of bootstrapped
 #' clusters and the original provided clusters. ARI measures similarity between different
 #' cluster results, where a value of 0 indicates an entirely random relationship between

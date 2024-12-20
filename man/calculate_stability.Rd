@@ -62,8 +62,7 @@ replicates calculates the Adjusted Rand Index (ARI) between each set of bootstra
 clusters and the original provided clusters. ARI measures similarity between different
 cluster results, where a value of 0 indicates an entirely random relationship between
 results, and a value of 1 indicates perfect agreement.
-}
-\details{
+
 When assessing stability, you should specify the same clustering parameters here as
 were used to calculate the original clusters.
 

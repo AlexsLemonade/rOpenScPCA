@@ -37,8 +37,7 @@ resolves such duplicates by summing the expression values for each duplicate
 gene name, which may be justified if the different Ensembl gene IDs share
 substantial sequence identity, which could make separate quantification of
 the two genes less reliable.
-}
-\details{
+
 The rowData for the summed SingleCellExperiment object is updated to reflect
 the new set of gene names. In each case, the first row for any duplicated id
 is retained. This may mean that for gene symbols that correspond to multiple

@@ -46,8 +46,7 @@ It is also possible to use an alternative reference, such as the default ScPCA
 reference gene sets or the reference gene sets provided by 10x Genomics for
 use with Cell Ranger. Values for the 10x-provided 2020 and 2024 references
 are available.
-}
-\details{
+
 By default, duplicate gene symbols are left as is, but can be made unique
 (as would be done by Seurat) by setting the `unique` argument to TRUE.
 
