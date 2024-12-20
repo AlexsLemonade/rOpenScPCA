@@ -1,16 +1,22 @@
 #' Calculate clusters across a set of parameters
 #'
-#' This function can be used to perform reproducible clustering while varying a set of parameters.
+#' @description This function can be used to perform reproducible clustering while varying a set of parameters.
 #' Multiple values can be provided for any of:
-#'  - The algorithm (`algorithm`)
-#'  - The weighting scheme (`weighting`)
-#'  - Number of nearest neighbors (`nn`)
-#'  - The resolution parameter (`resolution`)
-#'  - The objective function parameter (`objective_function`)
+#'
+#' - The algorithm (`algorithm`)
+#'
+#' - The weighting scheme (`weighting`)
+#'
+#' - Number of nearest neighbors (`nn`)
+#'
+#' - The resolution parameter (`resolution`)
+#'
+#' - The objective function parameter (`objective_function`).
 #'
 #' For each algorithm specified, all parameters possible to use with that
 #' algorithm will be systematically varied. This function does not accept additional
 #' parameters besides those listed above.
+#'
 #' Note that defaults for some arguments may differ from the `bluster::NNGraphParam()` defaults.
 #' Specifically, the clustering algorithm defaults to "louvain" and the weighting scheme to "jaccard"
 #' to align with common practice in scRNA-seq analysis.
