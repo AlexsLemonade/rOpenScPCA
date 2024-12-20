@@ -1,30 +1,35 @@
 #' Calculate graph-based clusters from a provided matrix
 #'
-#' @description This function is provided to simplify application of bluster package clustering functions on OpenScPCA data.
-#' In particular, this function runs `bluster::clusterRows()` with the `bluster::NNGraphParam()` function on a
+#' @description This function is provided to simplify application of bluster package
+#' clustering functions on OpenScPCA data. In particular, this function runs
+#' `bluster::clusterRows()` with the `bluster::NNGraphParam()` function on a
 #' principal components matrix, provided either directly or via single-cell object.
-#' Note that defaults for some arguments may differ from the `bluster::NNGraphParam()` defaults.
-#' Specifically, the clustering algorithm defaults to "louvain" and the weighting scheme to "jaccard"
-#' to align with common practice in scRNA-seq analysis.
 #'
-#' @param x An object containing PCs that clustering can be performed in. This can be either a SingleCellExperiment
-#'   object, a Seurat object, or a matrix where columns are PCs and rows are cells.
-#'   If a matrix is provided, it must have row names of cell ids (e.g., barcodes).
-#' @param algorithm Clustering algorithm to use. Must be one of "louvain" (default), "walktrap", or "leiden".
+#' Note that defaults for some arguments may differ from the `bluster::NNGraphParam()`
+#' defaults. #' Specifically, the clustering algorithm defaults to "louvain" and
+#' the weighting scheme to "jaccard" to align with common practice in scRNA-seq analysis.
+#'
+#' @param x An object containing PCs that clustering can be performed in. This can be
+#'  either a SingleCellExperiment object, a Seurat object, or a matrix where columns
+#'  are PCs and rows are cells. If a matrix is provided, it must have row names of
+#'  cell ids (e.g., barcodes).
+#' @param algorithm Clustering algorithm to use. Must be one of "louvain" (default),
+#'  "walktrap", or "leiden".
 #' @param weighting Weighting scheme to use. Must be one of "jaccard" (default), "rank", or "number"
 #' @param nn Number of nearest neighbors. The default is 10.
-#' @param resolution Resolution parameter used by Louvain and Leiden clustering only. Default is 1.
-#' @param objective_function Leiden-specific parameter for whether to use the Constant Potts Model ("CPM"; default)
-#'   or "modularity"
-#' @param cluster_args List of additional arguments to pass to the chosen clustering function.
-#'   Only single values for each argument are supported (no vectors or lists).
-#'   See `igraph` documentation for details on each clustering function: <https://igraph.org/r/html/latest>
+#' @param resolution Resolution parameter used by Louvain and Leiden clustering only.
+#'  The default is 1.
+#' @param objective_function Leiden-specific parameter for whether to use the
+#'  Constant Potts Model ("CPM"; default) or "modularity".
+#' @param cluster_args List of additional arguments to pass to the chosen clustering
+#'  function. Only single values for each argument are supported (no vectors or lists).
+#'  See `igraph` documentation for details on each clustering function: <https://igraph.org/r/html/latest>
 #' @param threads Number of threads to use. The default is 1.
 #' @param seed Random seed to set for clustering.
 #' @param pc_name Name of principal components slot in provided object.
-#'   This argument is only used if a SingleCellExperiment or Seurat object is provided.
-#'   If not provided, the SingleCellExperiment object name will default to "PCA" and the
-#'   Seurat object name will default to "pca".
+#'  This argument is only used if a SingleCellExperiment or Seurat object is provided.
+#'  If not provided, the SingleCellExperiment object name will default to "PCA" and the
+#'  Seurat object name will default to "pca".
 #'
 #' @return A data frame of cluster results with columns `cell_id` and `cluster`.
 #'   Additional columns represent algorithm parameters and include at least: `algorithm`, `weighting`, and `nn`.

@@ -18,23 +18,26 @@ calculate_clusters(
 )
 }
 \arguments{
-\item{x}{An object containing PCs that clustering can be performed in. This can be either a SingleCellExperiment
-object, a Seurat object, or a matrix where columns are PCs and rows are cells.
-If a matrix is provided, it must have row names of cell ids (e.g., barcodes).}
+\item{x}{An object containing PCs that clustering can be performed in. This can be
+either a SingleCellExperiment object, a Seurat object, or a matrix where columns
+are PCs and rows are cells. If a matrix is provided, it must have row names of
+cell ids (e.g., barcodes).}
 
-\item{algorithm}{Clustering algorithm to use. Must be one of "louvain" (default), "walktrap", or "leiden".}
+\item{algorithm}{Clustering algorithm to use. Must be one of "louvain" (default),
+"walktrap", or "leiden".}
 
 \item{weighting}{Weighting scheme to use. Must be one of "jaccard" (default), "rank", or "number"}
 
 \item{nn}{Number of nearest neighbors. The default is 10.}
 
-\item{resolution}{Resolution parameter used by Louvain and Leiden clustering only. Default is 1.}
+\item{resolution}{Resolution parameter used by Louvain and Leiden clustering only.
+The default is 1.}
 
-\item{objective_function}{Leiden-specific parameter for whether to use the Constant Potts Model ("CPM"; default)
-or "modularity"}
+\item{objective_function}{Leiden-specific parameter for whether to use the
+Constant Potts Model ("CPM"; default) or "modularity".}
 
-\item{cluster_args}{List of additional arguments to pass to the chosen clustering function.
-Only single values for each argument are supported (no vectors or lists).
+\item{cluster_args}{List of additional arguments to pass to the chosen clustering
+function. Only single values for each argument are supported (no vectors or lists).
 See `igraph` documentation for details on each clustering function: <https://igraph.org/r/html/latest>}
 
 \item{threads}{Number of threads to use. The default is 1.}
@@ -53,12 +56,14 @@ A data frame of cluster results with columns `cell_id` and `cluster`.
   and Leiden clustering will further include `objective_function`.
 }
 \description{
-This function is provided to simplify application of bluster package clustering functions on OpenScPCA data.
-In particular, this function runs `bluster::clusterRows()` with the `bluster::NNGraphParam()` function on a
+This function is provided to simplify application of bluster package
+clustering functions on OpenScPCA data. In particular, this function runs
+`bluster::clusterRows()` with the `bluster::NNGraphParam()` function on a
 principal components matrix, provided either directly or via single-cell object.
-Note that defaults for some arguments may differ from the `bluster::NNGraphParam()` defaults.
-Specifically, the clustering algorithm defaults to "louvain" and the weighting scheme to "jaccard"
-to align with common practice in scRNA-seq analysis.
+
+Note that defaults for some arguments may differ from the `bluster::NNGraphParam()`
+defaults. #' Specifically, the clustering algorithm defaults to "louvain" and
+the weighting scheme to "jaccard" to align with common practice in scRNA-seq analysis.
 }
 \examples{
 \dontrun{
