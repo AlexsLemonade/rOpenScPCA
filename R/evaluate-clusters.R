@@ -25,6 +25,8 @@
 #'   the cell's silhouette width, and `silhouette_other`, the closest cluster other
 #'   than the one to which the given cell was assigned. For more information,
 #'   see documentation for `bluster::approxSilhouette()`.
+#'   If there is only one cluster in the provided data, silhouette width will not be
+#'   calculated, and the inputted `cluster_df` data frame will be returned.
 #'
 #' @importFrom stats setNames
 #'
@@ -40,7 +42,6 @@ calculate_silhouette <- function(
     cluster_col = "cluster",
     cell_id_col = "cell_id",
     pc_name = NULL) {
-  x <- prepare_pc_matrix(x, pc_name)
 
   expected_df_names <- c(cell_id_col, cluster_col)
   stopifnot(
@@ -50,8 +51,15 @@ calculate_silhouette <- function(
       all(expected_df_names %in% colnames(cluster_df))
   )
 
+  if (length(unique(cluster_df[[cluster_col]])) == 1) {
+    warning("There is only 1 cluster in this data. Silhouette width will not be calculated.")
+    return(cluster_df)
+  }
+
+
   silhouette_df <- x |>
-    bluster::approxSilhouette(cluster_df[[cluster_col]]) |>
+    prepare_pc_matrix(pc_name) |>
+    bluster::approxSilhouette(cluster_df[[cluster_col]])
     as.data.frame() |>
     # note this gets renamed later as needed
     tibble::rownames_to_column("cell_id") |>
@@ -98,6 +106,8 @@ calculate_silhouette <- function(
 #'   the cell's neighborhood purity, and `maximum_neighbor`, the cluster with the
 #'   highest proportion of observations neighboring the given cell. For more
 #'   information see documentation for `bluster::neighborPurity()`.
+#'   If there is only one cluster in the provided data, neighborhood purity will not be
+#'   calculated, and the inputted `cluster_df` data frame will be returned.
 #'
 #' @export
 #' @examples
@@ -112,7 +122,6 @@ calculate_purity <- function(
     cell_id_col = "cell_id",
     pc_name = NULL,
     ...) {
-  x <- prepare_pc_matrix(x, pc_name)
 
   expected_df_names <- c(cell_id_col, cluster_col)
   stopifnot(
@@ -122,7 +131,13 @@ calculate_purity <- function(
       all(expected_df_names %in% colnames(cluster_df))
   )
 
+  if (length(unique(cluster_df[[cluster_col]])) == 1) {
+    warning("There is only 1 cluster in this data. Neighborhood purity will not be calculated.")
+    return(cluster_df)
+  }
+
   purity_df <- x |>
+    prepare_pc_matrix(pc_name) |>
     bluster::neighborPurity(cluster_df[[cluster_col]], ...) |>
     as.data.frame() |>
     tibble::rownames_to_column(cell_id_col) |>
