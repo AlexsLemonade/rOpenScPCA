@@ -59,7 +59,7 @@ calculate_silhouette <- function(
 
   silhouette_df <- x |>
     prepare_pc_matrix(pc_name) |>
-    bluster::approxSilhouette(cluster_df[[cluster_col]])
+    bluster::approxSilhouette(cluster_df[[cluster_col]]) |>
     as.data.frame() |>
     # note this gets renamed later as needed
     tibble::rownames_to_column("cell_id") |>
