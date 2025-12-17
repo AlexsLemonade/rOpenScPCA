@@ -42,7 +42,6 @@ calculate_silhouette <- function(
     cluster_col = "cluster",
     cell_id_col = "cell_id",
     pc_name = NULL) {
-
   expected_df_names <- c(cell_id_col, cluster_col)
   stopifnot(
     "The cell id column name must be length of 1." = length(cell_id_col) == 1,
@@ -122,7 +121,6 @@ calculate_purity <- function(
     cell_id_col = "cell_id",
     pc_name = NULL,
     ...) {
-
   expected_df_names <- c(cell_id_col, cluster_col)
   stopifnot(
     "The cell id column name must be length of 1." = length(cell_id_col) == 1,
