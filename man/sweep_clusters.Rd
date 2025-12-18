@@ -74,7 +74,7 @@ to align with common practice in scRNA-seq analysis.
 \dontrun{
 # perform Louvain clustering with Jaccard weighting (defaults),
 # varying the nearest neighobor parameter, and set a seed for reproducibility
-cluster_df <- sweep_clusters(
+cluster_list <- sweep_clusters(
   sce_object,
   nn = c(10, 15, 20, 25),
   seed = 11
@@ -82,7 +82,7 @@ cluster_df <- sweep_clusters(
 
 # perform Louvain clustering, with Jaccard and rank weighting, and
 # varying the nearest neighbor and resolution parameters.
-cluster_df <- sweep_clusters(
+cluster_list <- sweep_clusters(
   sce_object,
   algorithm = "louvain",
   weighting = c("jaccard", "rank"),
@@ -93,7 +93,7 @@ cluster_df <- sweep_clusters(
 
 # perform walktrap and Louvain clustering with Jaccard weighting, and
 # varying the nearest neighbors for both algorithms, and resolution for Louvain.
-cluster_df <- sweep_clusters(
+cluster_list <- sweep_clusters(
   sce_object,
   algorithm = c("walktrap", "louvain"),
   weighting = "jaccard",

@@ -332,3 +332,128 @@ calculate_stability <- function(
 
   return(all_ari_df)
 }
+
+#' Evaluate cluster results
+#'
+#' This wrapper function can be used to evaluate clusters from a single clustering
+#' calculation or a list calculated using `sweep_clusters()` function.
+#' Input should be be a data frame from a single `calculate_clusters()` call
+#' or a list of data frames with the resulting clusters from all parameter
+#' combinations provided to the `sweep_clusters()` function.
+#' Output is a list of results or a single data.frame depending on what was provided.
+#' Evaluation statistics are added in the form of columns to the original cluster
+#' object provided.
+#'
+#' @param x An object containing PCs that clusters were calculated from. This can be
+#'   either a SingleCellExperiment object, a Seurat object, or a matrix where columns
+#'   are PCs and rows are cells. If a matrix is provided, it must have row names of cell
+#'   ids (e.g., barcodes).
+#' @param cluster_results A single data frame or list of data frames obtained from
+#'  `rOpenScPCA::calculate_clusters()` or `rOpenScPCA::sweep_clusters()` respectively.
+#'   Each data frame in the list should contain
+#'   at least two columns: one representing unique cell ids, and one containing
+#'   cluster assignments. By default, these columns should be named `cell_id` and
+#'   `cluster` respectively, though this can be customized. The cell id column's
+#'   values should match either the PC matrix row names, or the
+#'   SingleCellExperiment/Seurat object cell ids.
+#' @param metrics Which metrics should be collected? Options are one or both of "purity" or "silhouette".
+#' Default is to collect both purity and silhouette.
+#'
+#' @return An updated list of data frames with additional columns from running evaluation with
+#' `rOpenScPCA::calculate_silhouette()` and/or `rOpenScPCA::calculate_purity()`, based on
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'
+#' # Calculate Principal Components
+#' pca_matrix <- reducedDim(sce_object, "PCA")
+#'
+#' # We can calculate a single data frame of cluster results:
+#' cluster_df <- calculate_clusters(
+#'   pca_matrix,
+#'   algorithm = "leiden",
+#'   resolution = 0.1,
+#'   seed = 11
+#' )
+#'
+#' # Then we can evaluate these cluster stats with
+#' # calculate_cell_cluster_metrics:
+#' sweep_list_evaled <- calculate_cell_cluster_metrics(
+#'   x = pca_matrix,
+#'   cluster_results = cluster_df
+#' )
+#'
+#' ######### Evaluate a list of multiple cluster results ############
+#' # If we obtain a list of clusters like so...
+#' sweep_list <- sweep_clusters(
+#'   sce_object,
+#'   weighting = "jaccard",
+#'   nn = c(10, 15, 25),
+#'   resolution = c(0.75, 1),
+#'   seed = 9
+#' )
+#'
+#' # Then we can evaluate these cluster stats with
+#' # calculate_cell_cluster_metrics:
+#' sweep_list_evaled <- calculate_cell_cluster_metrics(
+#'   x = pca_matrix,
+#'   cluster_results = sweep_list
+#' )
+#'
+#'
+#'
+#' # If we only want one or the other metric calculated we can use the metrics
+#' # argument which can be either 'silhouette' or 'purity':
+#' sweep_list_evaled <- calculate_cell_cluster_metrics(
+#'   x = pca_matrix,
+#'   cluster_results = sweep_list,
+#'   metrics = "purity"
+#' )
+#' }
+#'
+calculate_cell_cluster_metrics <- function(x,
+                                           cluster_results,
+                                           metrics = c("purity", "silhouette")) {
+  supported_evals <- c("purity", "silhouette")
+
+  if (is.data.frame(cluster_results)) {
+    cluster_results <- list(cluster_results)
+  }
+  # Check input arguments
+  stopifnot(
+    "`cluster_results` must be a data.frame or list containing data.frame objects" =
+      is.list(cluster_results) && all(sapply(cluster_results, is.data.frame)),
+    " Cluster `evals` that are supported are only 'purity' and 'silhouette'" =
+      all(metrics %in% supported_evals)
+  )
+
+  evaled_list <- cluster_results |>
+    purrr::map(
+      \(df) {
+        if ("purity" %in% metrics) {
+          df <- calculate_purity(
+            x = x,
+            cluster_df = df
+          )
+        }
+        if ("silhouette" %in% metrics) {
+          df <- calculate_silhouette(
+            x = x,
+            cluster_df = df
+          )
+        }
+        return(df)
+      }
+    )
+
+  # if there's only one data.frame input then let's just output a data frame
+  if (length(evaled_list) == 1) {
+    result <- evaled_list[[1]]
+  } else {
+    result <- evaled_list
+  }
+
+  return(result)
+}
