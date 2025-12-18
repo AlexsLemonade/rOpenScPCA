@@ -48,6 +48,24 @@ test_that("calculate_silhouette works as expected with non-default cell id colum
 
 
 
+test_that("calculate_silhouette throws a warning when there is only 1 cluster", {
+  cluster_df <- cluster_df |>
+    dplyr::mutate(cluster = 1)
+
+  expect_warning({
+    df <- calculate_silhouette(test_mat, cluster_df)
+  })
+
+  expected_output <- cluster_df |>
+    dplyr::mutate(
+      silhouette_width = NA,
+      silhouette_other = NA
+    )
+  expect_equal(expected_output, df)
+})
+
+
+
 test_that("calculate_purity works as expected", {
   df <- calculate_purity(test_mat, cluster_df)
 
@@ -88,6 +106,23 @@ test_that("calculate_purity works as expected with non-default cell id column na
     c(colnames(cluster_df), "purity", "maximum_neighbor")
   )
   expect_equal(df$cluster, cluster_df$cluster)
+})
+
+
+test_that("calculate_purity throws a warning when there is only 1 cluster", {
+  cluster_df <- cluster_df |>
+    dplyr::mutate(cluster = 1)
+
+  expect_warning({
+    df <- calculate_purity(test_mat, cluster_df)
+  })
+
+  expected_output <- cluster_df |>
+    dplyr::mutate(
+      purity = NA,
+      maximum_neighbor = NA
+    )
+  expect_equal(expected_output, df)
 })
 
 
