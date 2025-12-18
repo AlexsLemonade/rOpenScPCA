@@ -56,7 +56,12 @@ test_that("calculate_silhouette throws a warning when there is only 1 cluster", 
     df <- calculate_silhouette(test_mat, cluster_df)
   })
 
-  expect_equal(cluster_df, df)
+  expected_output <- cluster_df |>
+    dplyr::mutate(
+      silhouette_width = NA,
+      silhouette_other = NA
+    )
+  expect_equal(expected_output, df)
 })
 
 
@@ -112,7 +117,12 @@ test_that("calculate_purity throws a warning when there is only 1 cluster", {
     df <- calculate_purity(test_mat, cluster_df)
   })
 
-  expect_equal(cluster_df, df)
+  expected_output <- cluster_df |>
+    dplyr::mutate(
+      purity = NA,
+      maximum_neighbor = NA
+    )
+  expect_equal(expected_output, df)
 })
 
 

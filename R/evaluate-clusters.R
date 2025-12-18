@@ -25,8 +25,9 @@
 #'   the cell's silhouette width, and `silhouette_other`, the closest cluster other
 #'   than the one to which the given cell was assigned. For more information,
 #'   see documentation for `bluster::approxSilhouette()`.
-#'   If there is only one cluster in the provided data, silhouette width will not be
-#'   calculated, and the inputted `cluster_df` data frame will be returned.
+#'   If there is only one cluster in the provided data, silhouette width can not be
+#'   calculated. The returned data frame will have `NA` values in the
+#'   `silhouette_width` and `silhouette_other` columns.
 #'
 #' @importFrom stats setNames
 #'
@@ -52,6 +53,11 @@ calculate_silhouette <- function(
 
   if (length(unique(cluster_df[[cluster_col]])) == 1) {
     warning("There is only 1 cluster in this data. Silhouette width will not be calculated.")
+    cluster_df <- cluster_df |>
+      dplyr::mutate(
+        silhouette_width = NA,
+        silhouette_other = NA
+      )
     return(cluster_df)
   }
 
@@ -105,8 +111,9 @@ calculate_silhouette <- function(
 #'   the cell's neighborhood purity, and `maximum_neighbor`, the cluster with the
 #'   highest proportion of observations neighboring the given cell. For more
 #'   information see documentation for `bluster::neighborPurity()`.
-#'   If there is only one cluster in the provided data, neighborhood purity will not be
-#'   calculated, and the inputted `cluster_df` data frame will be returned.
+#'   If there is only one cluster in the provided data, neighborhood purity can not be
+#'   calculated. The returned data frame will have `NA` values in the `purity` and
+#'   `maximum_neighbor` columns.
 #'
 #' @export
 #' @examples
@@ -131,6 +138,11 @@ calculate_purity <- function(
 
   if (length(unique(cluster_df[[cluster_col]])) == 1) {
     warning("There is only 1 cluster in this data. Neighborhood purity will not be calculated.")
+    cluster_df <- cluster_df |>
+      dplyr::mutate(
+        purity = NA,
+        maximum_neighbor = NA
+      )
     return(cluster_df)
   }
 
