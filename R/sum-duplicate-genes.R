@@ -113,7 +113,6 @@ sum_duplicate_genes <- function(sce,
   }
 
 
-
   # Build the new SingleCellExperiment object
   summed_sce <- SingleCellExperiment(
     assays = assays,

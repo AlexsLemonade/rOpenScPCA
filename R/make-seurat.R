@@ -42,11 +42,12 @@
 #' }
 #'
 sce_to_seurat <- function(
-    sce,
-    use_symbols = TRUE,
-    reference = c("sce", "scpca", "10x2020", "10x2024"),
-    dedup_method = c("unique", "sum"),
-    seurat_assay_version = c("v5", "v3")) {
+  sce,
+  use_symbols = TRUE,
+  reference = c("sce", "scpca", "10x2020", "10x2024"),
+  dedup_method = c("unique", "sum"),
+  seurat_assay_version = c("v5", "v3")
+) {
   reference <- match.arg(reference)
   dedup_method <- match.arg(dedup_method)
   seurat_assay_version <- match.arg(seurat_assay_version)

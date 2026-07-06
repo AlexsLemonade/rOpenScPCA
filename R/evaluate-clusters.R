@@ -38,11 +38,12 @@
 #' cluster_df <- calculate_silhouette(sce_object, cluster_df)
 #' }
 calculate_silhouette <- function(
-    x,
-    cluster_df,
-    cluster_col = "cluster",
-    cell_id_col = "cell_id",
-    pc_name = NULL) {
+  x,
+  cluster_df,
+  cluster_col = "cluster",
+  cell_id_col = "cell_id",
+  pc_name = NULL
+) {
   expected_df_names <- c(cell_id_col, cluster_col)
   stopifnot(
     "The cell id column name must be length of 1." = length(cell_id_col) == 1,
@@ -80,8 +81,6 @@ calculate_silhouette <- function(
 
   return(silhouette_df)
 }
-
-
 
 
 #' Calculate the neighborhood purity of clusters
@@ -122,12 +121,13 @@ calculate_silhouette <- function(
 #' cluster_df <- calculate_purity(sce_object, cluster_df)
 #' }
 calculate_purity <- function(
-    x,
-    cluster_df,
-    cluster_col = "cluster",
-    cell_id_col = "cell_id",
-    pc_name = NULL,
-    ...) {
+  x,
+  cluster_df,
+  cluster_col = "cluster",
+  cell_id_col = "cell_id",
+  pc_name = NULL,
+  ...
+) {
   expected_df_names <- c(cell_id_col, cluster_col)
   stopifnot(
     "The cell id column name must be length of 1." = length(cell_id_col) == 1,
@@ -162,7 +162,6 @@ calculate_purity <- function(
 
   return(purity_df)
 }
-
 
 
 #' Calculate cluster stability using the Adjusted Rand Index (ARI)
@@ -257,15 +256,16 @@ calculate_purity <- function(
 #' )
 #' }
 calculate_stability <- function(
-    x,
-    cluster_df,
-    cluster_col = "cluster",
-    cell_id_col = "cell_id",
-    replicates = 20,
-    seed = NULL,
-    pc_name = NULL,
-    warnings = FALSE,
-    ...) {
+  x,
+  cluster_df,
+  cluster_col = "cluster",
+  cell_id_col = "cell_id",
+  replicates = 20,
+  seed = NULL,
+  pc_name = NULL,
+  warnings = FALSE,
+  ...
+) {
   if (!is.null(seed)) {
     set.seed(seed)
   }
