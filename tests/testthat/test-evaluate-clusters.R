@@ -47,7 +47,6 @@ test_that("calculate_silhouette works as expected with non-default cell id colum
 })
 
 
-
 test_that("calculate_silhouette throws a warning when there is only 1 cluster", {
   cluster_df <- cluster_df |>
     dplyr::mutate(cluster = 1)
@@ -65,7 +64,6 @@ test_that("calculate_silhouette throws a warning when there is only 1 cluster", 
 })
 
 
-
 test_that("calculate_purity works as expected", {
   df <- calculate_purity(test_mat, cluster_df)
 
@@ -80,7 +78,6 @@ test_that("calculate_purity works as expected", {
 })
 
 
-
 test_that("calculate_purity works as expected with non-default cluster column name", {
   cluster_df <- cluster_df |>
     dplyr::rename(clusters = cluster)
@@ -92,7 +89,6 @@ test_that("calculate_purity works as expected with non-default cluster column na
   )
   expect_equal(df$clusters, cluster_df$clusters)
 })
-
 
 
 test_that("calculate_purity works as expected with non-default cell id column name", {
@@ -126,7 +122,6 @@ test_that("calculate_purity throws a warning when there is only 1 cluster", {
 })
 
 
-
 test_that("calculate_stability works as expected with defaults", {
   df <- calculate_stability(test_mat, cluster_df)
 
@@ -145,7 +140,6 @@ test_that("calculate_stability works as expected with different replicates", {
 
   expect_equal(nrow(df), 2)
 })
-
 
 
 test_that("calculate_stability works as expected with object and pc_name", {
@@ -178,8 +172,6 @@ test_that("calculate_stability warnings argument works", {
 })
 
 
-
-
 test_that("calculate_stability works as expected with non-default cluster column name", {
   cluster_df <- cluster_df |>
     dplyr::rename(clusters = cluster)
@@ -206,8 +198,6 @@ test_that("calculate_stability works as expected with non-default cell id name",
     c("replicate", "ari", expected_names)
   )
 })
-
-
 
 
 test_that("calculate_stability errors as expected", {

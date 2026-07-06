@@ -56,7 +56,6 @@ test_that("sweep_clusters works as expected with Seurat input", {
 })
 
 
-
 test_that("sweep_clusters works as expected with non-default algorithm", {
   sweep_list <- sweep_clusters(
     test_mat,
@@ -84,8 +83,6 @@ test_that("sweep_clusters works as expected with non-default algorithm", {
 })
 
 
-
-
 test_that("sweep_clusters works as expected with multiple algorithms", {
   sweep_list <- sweep_clusters(
     test_mat,
@@ -103,7 +100,6 @@ test_that("sweep_clusters works as expected with multiple algorithms", {
   expect_length(alg_counts, 6)
   expect_equal(sum(alg_counts == "louvain"), 4)
   expect_equal(sum(alg_counts == "walktrap"), 2)
-
 
 
   sweep_list |>

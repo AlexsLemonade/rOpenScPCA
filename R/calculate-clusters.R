@@ -67,16 +67,17 @@
 #' )
 #' }
 calculate_clusters <- function(
-    x,
-    algorithm = c("louvain", "walktrap", "leiden"),
-    weighting = c("jaccard", "rank", "number"),
-    nn = 10,
-    resolution = 1, # Louvain or Leiden
-    objective_function = c("CPM", "modularity"), # Leiden only
-    cluster_args = list(),
-    threads = 1,
-    seed = NULL,
-    pc_name = NULL) {
+  x,
+  algorithm = c("louvain", "walktrap", "leiden"),
+  weighting = c("jaccard", "rank", "number"),
+  nn = 10,
+  resolution = 1, # Louvain or Leiden
+  objective_function = c("CPM", "modularity"), # Leiden only
+  cluster_args = list(),
+  threads = 1,
+  seed = NULL,
+  pc_name = NULL
+) {
   if (!is.null(seed)) {
     set.seed(seed)
   }
@@ -151,7 +152,6 @@ calculate_clusters <- function(
 }
 
 
-
 #' Extract a principal components (PC) matrix from either a SingleCellExperiment
 #' or a Seurat object.
 #'
@@ -221,10 +221,6 @@ extract_pc_matrix <- function(sc_object, pc_name = NULL) {
 
   return(pca_matrix)
 }
-
-
-
-
 
 
 #' Helper function to check and/or extract a matrix of PCs from a given object

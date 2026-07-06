@@ -77,15 +77,16 @@
 #' )
 #' }
 sweep_clusters <- function(
-    x,
-    algorithm = "louvain",
-    weighting = "jaccard",
-    nn = 10,
-    resolution = 1, # Louvain or Leiden
-    objective_function = "CPM", # Leiden only
-    threads = 1,
-    seed = NULL,
-    pc_name = NULL) {
+  x,
+  algorithm = "louvain",
+  weighting = "jaccard",
+  nn = 10,
+  resolution = 1, # Louvain or Leiden
+  objective_function = "CPM", # Leiden only
+  threads = 1,
+  seed = NULL,
+  pc_name = NULL
+) {
   # check and prepare matrix
   pca_matrix <- prepare_pc_matrix(x, pc_name = pc_name)
 

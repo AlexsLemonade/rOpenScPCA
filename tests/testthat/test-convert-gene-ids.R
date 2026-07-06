@@ -65,7 +65,6 @@ test_that("gene symbol conversion in seurat compatibility mode works", {
 })
 
 
-
 test_that("conversion of a full sce object works as expected", {
   sce <- readRDS(test_path("data", "scpca_sce.rds"))
   gene_symbols <- rowData(sce)$gene_symbol

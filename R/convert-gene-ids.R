@@ -50,12 +50,13 @@
 #' }
 #'
 ensembl_to_symbol <- function(
-    ensembl_ids,
-    reference = c("scpca", "10x2020", "10x2024"),
-    sce = NULL,
-    unique = FALSE,
-    leave_na = FALSE,
-    seurat_compatible = FALSE) {
+  ensembl_ids,
+  reference = c("scpca", "10x2020", "10x2024"),
+  sce = NULL,
+  unique = FALSE,
+  leave_na = FALSE,
+  seurat_compatible = FALSE
+) {
   reference <- match.arg(reference)
   stopifnot(
     "`ensembl_ids` must be a character vector." = is.character(ensembl_ids),
@@ -156,12 +157,13 @@ ensembl_to_symbol <- function(
 #' }
 #'
 sce_to_symbols <- function(
-    sce,
-    reference = c("sce", "scpca", "10x2020", "10x2024"),
-    unique = FALSE,
-    convert_hvg = TRUE,
-    convert_pca = TRUE,
-    seurat_compatible = FALSE) {
+  sce,
+  reference = c("sce", "scpca", "10x2020", "10x2024"),
+  unique = FALSE,
+  convert_hvg = TRUE,
+  convert_pca = TRUE,
+  seurat_compatible = FALSE
+) {
   reference <- match.arg(reference)
   stopifnot(
     "`sce` must be a SingleCellExperiment object." = is(sce, "SingleCellExperiment"),

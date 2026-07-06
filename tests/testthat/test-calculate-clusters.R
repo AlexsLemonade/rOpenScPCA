@@ -43,7 +43,6 @@ test_that("calculate_clusters runs with additional cluster_args", {
 })
 
 
-
 test_that("calculate_clusters runs when cluster_args is empty", {
   cluster_df <- calculate_clusters(
     test_mat,
@@ -75,7 +74,6 @@ test_that("calculate_clusters runs with an object, defaults", {
 })
 
 
-
 test_that("calculate_clusters errors as expected", {
   expect_error(calculate_clusters(test_mat, resolution = "string"))
   expect_error(calculate_clusters(test_mat, nn = "string"))
@@ -86,7 +84,6 @@ test_that("calculate_clusters errors as expected", {
     )
   )
 })
-
 
 
 test_that("extract_pc_matrix works as expected", {
@@ -113,8 +110,6 @@ test_that("extract_pc_matrix errors as expected", {
     extract_pc_matrix(test_mat)
   )
 })
-
-
 
 
 test_that("prepare_pc_matrix works as expected with matrix input", {
