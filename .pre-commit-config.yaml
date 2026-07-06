@@ -2,7 +2,7 @@
 # R specific hooks: https://github.com/lorenzwalthert/precommit
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: detect-aws-credentials
         args: [--allow-missing-credentials]
@@ -16,18 +16,18 @@ repos:
         exclude: '\.Rd'
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.28.3
+    rev: v1
     hooks:
       - id: typos
         exclude: '\.nb\.html'
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.21.2
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.4.3.9003
+    rev: v0.4.3.9028
     hooks:
 
       - id: style-files
